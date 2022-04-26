@@ -41,7 +41,7 @@ export function dateSortDesc(a: string, b: string) {
   if (a < b) return 1
   return 0
 }
-
+//@ts-ignore
 export async function getFileBySlug<T>(type: 'authors' | 'blog', slug: string | string[]) {
   const mdxPath = path.join(root, 'data', type, `${slug}.mdx`)
   const mdPath = path.join(root, 'data', type, `${slug}.md`)
@@ -62,6 +62,7 @@ export async function getFileBySlug<T>(type: 'authors' | 'blog', slug: string | 
     source,
     // mdx imports can be automatically source from the components directory
     cwd: path.join(root, 'components'),
+    //@ts-ignore
     xdmOptions(options, frontmatter) {
       // this is the recommended way to add custom remark/rehype plugins:
       // The syntax might look weird, but it protects you in case we add/remove
