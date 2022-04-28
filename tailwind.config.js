@@ -29,7 +29,10 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
+        //@ts-ignore
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+        //@ts-ignore
+        mono: ['UbuntuMono', ...defaultTheme.fontFamily.mono],
       },
       colors: {
         primary: colors.teal,

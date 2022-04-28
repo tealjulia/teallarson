@@ -1,6 +1,6 @@
 ---
 name: Teal Larson
-avatar: /static/images/avatar.png
+avatar: /static/images/teal-larson.png
 occupation: Software Engineer
 company: Airbyte
 email: larson.teal@gmail.com

@@ -138,3 +138,10 @@ export async function getAllFilesFrontMatter(folder: 'blog') {
 
   return allFrontMatter.sort((a, b) => dateSortDesc(a.date, b.date))
 }
+
+export async function getAuthorFrontMatter(author: 'default') {
+  const fullPath = path.join(root, 'data', 'authors', `${author}.md`)
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const matterFile = matter(fileContents)
+  return matterFile.data as AuthorFrontMatter
+}

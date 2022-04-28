@@ -2,24 +2,52 @@ import Link from '@/components/Link'
 import { PageSEO } from '@/components/SEO'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { getAllFilesFrontMatter, getAuthorFrontMatter } from '@/lib/mdx'
 import formatDate from '@/lib/utils/formatDate'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import Image from 'next/image'
+import { AuthorFrontMatter } from 'types/AuthorFrontMatter'
 import { PostFrontMatter } from 'types/PostFrontMatter'
 
 const MAX_DISPLAY = 5
 
-export const getStaticProps: GetStaticProps<{ posts: PostFrontMatter[] }> = async () => {
+export const getStaticProps: GetStaticProps<{
+  posts: PostFrontMatter[]
+  author: AuthorFrontMatter
+}> = async () => {
   const posts = await getAllFilesFrontMatter('blog')
+  const author = await getAuthorFrontMatter('default')
 
-  return { props: { posts } }
+  return { props: { posts, author } }
 }
 
-export default function Home({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Home({ posts, author }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+          <div className="prose max-w-none text-gray-500 dark:text-gray-400">{author.name}</div>{' '}
+          <div className="flex flex-row">
+            <div>
+              <Image src={author.avatar} alt={author.name} width={412} height={523} />
+            </div>
+            <div className="prose ml-6 mb-1 max-w-none self-end text-gray-500 dark:text-gray-400">
+              I'm Teal Larson. I'm a software engineer @{' '}
+              <a href="https://www.airbyte.com/" target="_blank" rel="noreferrer">
+                Airbyte
+              </a>
+              , formerly @{' '}
+              <a href="https://www.grouparoo.com/" target="_blank" rel="noreferrer">
+                Grouparoo
+              </a>
+              .<br />
+              <br />I code, I write, I read, I speak, I create.
+              <br />
+              <br />
+            </div>
+          </div>
+        </div>
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
             Latest

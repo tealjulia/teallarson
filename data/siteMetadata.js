@@ -1,7 +1,7 @@
 const siteMetadata = {
   title: 'Teal Larson',
   author: 'Teal Larson',
-  headerTitle: "Teal's Words and Projects ",
+  headerTitle: '//TL',
   description: 'Blog posts, talks, and projects by Teal Larson.',
   language: 'en-us',
   theme: 'system', // system, dark or light
