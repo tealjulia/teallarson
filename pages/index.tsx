@@ -30,7 +30,7 @@ export default function Home({ posts, author }: InferGetStaticPropsType<typeof g
           <div className="prose max-w-none text-gray-500 dark:text-gray-400">{author.name}</div>{' '}
           <div className="flex flex-row">
             <div>
-              <Image src={author.avatar} alt={author.name} width={412} height={523} />
+              <Image src={author.avatar} alt={author.name} width={198} height={251} />
             </div>
             <div className="prose ml-6 mb-1 max-w-none self-end text-gray-500 dark:text-gray-400">
               I'm Teal Larson. I'm a software engineer @{' '}
