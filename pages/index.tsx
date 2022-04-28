@@ -27,7 +27,6 @@ export default function Home({ posts, author }: InferGetStaticPropsType<typeof g
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <div className="prose max-w-none text-gray-500 dark:text-gray-400">{author.name}</div>{' '}
           <div className="flex flex-row">
             <div>
               <Image src={author.avatar} alt={author.name} width={198} height={251} />
