@@ -2,6 +2,7 @@ import '@/css/tailwind.css'
 import '@/css/prism.css'
 import 'katex/dist/katex.css'
 import { usePostHog } from 'next-use-posthog'
+import '@/css/styles.css'
 
 import '@fontsource/inter/variable-full.css'
 
@@ -22,7 +23,11 @@ export default function App({ Component, pageProps }: AppProps) {
   })
 
   return (
-    <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme={siteMetadata.theme}
+      themes={['hotdog', 'light', 'dark']}
+    >
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
