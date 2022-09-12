@@ -7,6 +7,7 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { AuthorFrontMatter } from 'types/AuthorFrontMatter'
 import { PostFrontMatter } from 'types/PostFrontMatter'
 import { Toc } from 'types/Toc'
+import Head from 'next/head'
 
 const DEFAULT_LAYOUT = 'PostLayout'
 
@@ -70,15 +71,17 @@ export default function Blog({
   return (
     <>
       {'draft' in frontMatter && frontMatter.draft !== true ? (
-        <MDXLayoutRenderer
-          layout={frontMatter.layout || DEFAULT_LAYOUT}
-          toc={toc}
-          mdxSource={mdxSource}
-          frontMatter={frontMatter}
-          authorDetails={authorDetails}
-          prev={prev}
-          next={next}
-        />
+        <>
+          <MDXLayoutRenderer
+            layout={frontMatter.layout || DEFAULT_LAYOUT}
+            toc={toc}
+            mdxSource={mdxSource}
+            frontMatter={frontMatter}
+            authorDetails={authorDetails}
+            prev={prev}
+            next={next}
+          />
+        </>
       ) : (
         <div className="mt-24 text-center">
           <PageTitle>
