@@ -32,16 +32,7 @@ export default function Home({ posts, author }: InferGetStaticPropsType<typeof g
               <Image src={author.avatar} alt={author.name} width={198} height={251} />
             </div>
             <div className="prose ml-6 mb-1 max-w-none self-end text-gray-500 dark:text-gray-400">
-              I'm Teal Larson. I'm a software engineer @{' '}
-              <a href="https://www.airbyte.com/" target="_blank" rel="noreferrer">
-                Airbyte
-              </a>
-              , formerly @{' '}
-              <a href="https://www.grouparoo.com/" target="_blank" rel="noreferrer">
-                Grouparoo
-              </a>
-              .<br />
-              <br />I code, I write, I read, I speak, I create.
+              Teal Larson.
               <br />
               <br />
             </div>
