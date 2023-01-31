@@ -32,4 +32,23 @@ input:-webkit-autofill:focus {
   html {
     @apply font-mono;
   }
+
+  [data-theme='hotdog'] {
+    --background-color: rgb(255, 0, 0);
+    --main-text-color: rgb(255, 230, 0);
+    --primary-color: rgb(0 0 0);
+    --secondary-text-color: rgb(255 255 255);
+  }
+  [data-theme='light'] {
+    --background-color: rgb(255 255 255);
+    --main-text-color: rgb(31 41 55);
+    --primary-color: rgb(45 212 191);
+    --secondary-text-color: #6b7280;
+  }
+  [data-theme='dark'] {
+    --background-color: rgb(31 41 55);
+    --main-text-color: rgb(255 255 255);
+    --primary-color: rgb(45 212 191);
+    --secondary-text-color: rgb(156 163 175);
+  }
 }

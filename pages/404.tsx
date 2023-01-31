@@ -1,6 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import utilStyles from '../styles/utils.module.css'
 
 export default function Custom404() {
   return (

@@ -1,28 +1,38 @@
-import { Fragment, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
-import { Menu, Transition } from '@headlessui/react'
+import { Listbox, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faHotdog, faPalette } from '@fortawesome/free-solid-svg-icons'
+import { faMoon, faSun } from '@fortawesome/free-regular-svg-icons'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme, resolvedTheme } = useTheme()
 
-  const onClick = (themeName: string) => {
-    setTheme(themeName)
-  }
+  const themeOptions = [
+    { name: 'light', icon: faSun },
+    { name: 'dark', icon: faMoon },
+    { name: 'hotdog', icon: faHotdog },
+  ]
 
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), [])
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="inline-flex w-full justify-center px-4 py-2 text-sm font-medium hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 ">
-          Theme{' '}
-          <FontAwesomeIcon icon={faChevronDown} className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
-        </Menu.Button>
-      </div>
+    <Listbox as="div" className="relative inline-block text-left" value={theme} onChange={setTheme}>
+      {/* <div> */}
+      <Listbox.Button className="inline-flex w-full justify-center px-4 py-2 align-middle text-sm font-medium hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 ">
+        <div></div>
+        <FontAwesomeIcon icon={faPalette} className="self-center" />
+        <FontAwesomeIcon
+          icon={faChevronDown}
+          size="sm"
+          className="ml-2 -mr-1 h-5 w-5"
+          aria-hidden="true"
+        />
+      </Listbox.Button>
+      {/* </div> */}
       <Transition
         enter="transition ease-out duration-100"
         enterFrom="transform opacity-0 scale-95"
@@ -31,44 +41,25 @@ const ThemeSwitch = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       />
-      <Menu.Items className="absolute right-0 mt-2 w-24 origin-top-right divide-y divide-gray-100 rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+      <Listbox.Options className="absolute right-0 mt-2 w-24 origin-top-right divide-y divide-gray-100 rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div className="px-1 py-1">
-          <Menu.Item>
-            {({ active }) => (
-              <button
-                className="group flex w-full items-center rounded-md px-2 py-2 text-sm"
-                onClick={() => onClick('light')}
-              >
-                {active && <FontAwesomeIcon icon={faCheck} className="mr-1" />}
-                Light
-              </button>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <button
-                className="group flex w-full items-center rounded-md px-2 py-2 text-sm"
-                onClick={() => onClick('dark')}
-              >
-                {active && <FontAwesomeIcon icon={faCheck} className="mr-1" />}
-                Dark
-              </button>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <button
-                className="group flex w-full items-center rounded-md px-2 py-2 text-sm"
-                onClick={() => onClick('hotdog')}
-              >
-                {active && <FontAwesomeIcon icon={faCheck} className="mr-1" />}
-                Hotdog
-              </button>
-            )}
-          </Menu.Item>
+          {themeOptions.map((option) => {
+            return (
+              <Listbox.Option key={option.name} value={option.name}>
+                {({ active, selected }) => (
+                  <div className="group flex w-full items-center rounded-md px-2 py-2 text-sm">
+                    {selected && (
+                      <FontAwesomeIcon icon={option.icon as IconProp} className="mr-1" />
+                    )}
+                    {option.name}
+                  </div>
+                )}
+              </Listbox.Option>
+            )
+          })}
         </div>
-      </Menu.Items>
-    </Menu>
+      </Listbox.Options>
+    </Listbox>
 
     // <button
     //   aria-label="Toggle Dark Mode"
