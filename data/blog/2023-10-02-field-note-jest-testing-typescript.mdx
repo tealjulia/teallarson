@@ -23,7 +23,7 @@ Let's break down an example of this in practice. Here, I am testing a component 
 ```TypeScript
 jest.mock("hooks/useRunFlow"); // 1. Mock the file
 const mockRunFlow = useRunFlow as unknown as jest.Mock<Partial<typeof useRunFlow>>; // 2. Create a mock of the function with some type sorcery
-const baseUseFormOauthAdapterValues = { // the optional base case
+const baseHookValues = { // the optional base case
     done: false
     run: jest.fn(),
     loading: false,
@@ -41,7 +41,7 @@ describe("RunButton", () => {
 
     it("Shows the Incomplete label if done is false", () => {
     mockRunFlow.mockImplementationOnce(() => ({
-     ...mockUseFormOauthAdapter
+     ...baseHookValues
      done: false
     }));
 
@@ -54,7 +54,7 @@ describe("RunButton", () => {
 
     it("Shows the Run Again label if done is true", () => {
         mockRunFlow.mockImplementationOnce(() => ({
-        ...mockUseFormOauthAdapter
+        ...baseHookValues
         done: true
         }));
 
