@@ -1,45 +1,41 @@
 ---
-title: 'Field Note: Mocking a React Hook with Multiple Value Sets in Jest'
+title: 'Field Note: A Three Step Waltz for Mocking React Hooks with Jest and TypeScript'
 date: '2023-10-02'
-tags: ['field-notes', 'women in stem', 'learning', 'learn to code']
+tags: ['field-notes', 'react', 'testing', 'typescript']
 draft: true
 images: ['/static/images/posts/2022-08-30-bootcamp-to-job-hunt/direction.jpg']
-summary: 'What I did after coding bootcamp to land my first full-time engineering role.'
+summary: 'Why is it so hard to mock a hook with multiple values in the same suite?  I may never know.  But I do know how to get around that with this One Cool Trick.'
 ---
-
-**Note**: At some point, I stopped writing! Usually when this happens it's because I've been writing for a blog at work. But lately I just _haven't been writing_ 😯. I can't have that, but the 10,000 lb pencil is intimidated at making the longer epic-style blog posts I've done in the past.
-
-In the spirit of "something is better than nothing"... and also in the spirit of jotting these things down so I don't forget them myself, I'm going to kick off a little "Field Notes" section here in the blog.
 
 ## Testing Hooks: The Three Step Waltz
 
-I came across a situation last year where I was testing a component that depended upon a hook. I wanted to test how the component behaved in diferent scenarios (ie: with different return values from the hooks). This proved surprisingly difficult to do in a TypeScript-friendly way!
+Sometimes, you need to test a component that depends upon a hook. Reasonably, you probably want to mock out different return values within that suite. While the concept is straightforward, I've found the solution to be somewhat unintuitive. In fact, while I figured this pattern out over a year ago, I still have to find my old code every time to remember how to implement it.
 
-I discovered what I have termed a little Three Step Hook Waltz:
+I call it a Three Step Waltz:
 
-1. Mock the file
-2. Create a mock of the function + perform some type sorcery (one line of code so we'll call it one step 😉)
+1. Mock the file with your hook in it
+2. Create a mock of the function itself + perform some type sorcery (one line of code so we'll call it one step 😉)
 3. MockImplementationOnce in your tests
-   _Optional_: I like to include a "base case" mock return so that my tests only contain the variables I want to pay attention to. In my opinion, this makes it easier to tell what exactly is being tested where + reduces human error.
+   _Optional_: I like to include a "base case" mock return so that my test code only contains the variables I want to pay attention to + the rest can be handled via a spread operator. In my opinion, this makes it easier to tell what exactly is being tested where, as well as reducing human error.
 
-Let's break down an example of this in practice. Here, I am testing a component called `RunButton` that starts an async process. I have a hook called `useRunFlow` that tracks the process and I'd like to make sure that my button's content changes correctly based upon a few different hooks (one being this `useRunFlow`):
+Let's break down an example of this in practice. Here, I am testing a component called `RunButton` that starts an async process. I have a hook called `useRunFlow` that triggers and tracks the process' state. I'd like to make sure that my button's content changes correctly based upon a few different hooks (one being this `useRunFlow`):
 
 ```TypeScript
 jest.mock("hooks/useRunFlow"); // 1. Mock the file
 const mockRunFlow = useRunFlow as unknown as jest.Mock<Partial<typeof useRunFlow>>; // 2. Create a mock of the function with some type sorcery
-const baseUseFormOauthAdapterValues = { // I like using a base case as it keeps the tests I write cleaner
+const baseUseFormOauthAdapterValues = { // the optional base case
     done: false
     run: jest.fn(),
     loading: false,
 };
 ```
 
-"Teal," you're saying, "that's great, but you said three steps. Have you forgotten how to count? That's only two!" Ah ha, yes, the third step comes in the actual tests where you can now manipulate this hook to your heart's content.
+"Teal," you're saying, "that's great, but you said three steps. Have you forgotten how to count? That's only two!" Ah ha, the third step comes in the actual tests where you can now manipulate this hook to your heart's content.
 
 Example:
 
 ```TypeScript
-desribe("RunButton", () => {
+describe("RunButton", () => {
 
     beforeEach(() => jest.clearAllMocks())
 
@@ -72,3 +68,8 @@ desribe("RunButton", () => {
 ```
 
 Et voila!
+
+If you'd like to learn more about testing with React, here are a few resources I've found useful:
+
+- [Testing React with Jest and React Testing Library (RTL)](https://www.udemy.com/course/react-testing-library/) -- Bonnie's class is great! My tests and my overall approach to testing improved quite a bit after taking this.
+- [React Testing Library "Cheat Sheet"](https://testing-library.com/docs/react-testing-library/cheatsheet/) -- Because it's hard to remember whether you want to `query` or `get`... or what you can `query` or `get` by!
