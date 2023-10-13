@@ -35,11 +35,11 @@ export const getStaticProps: GetStaticProps<{
   const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === slug)
   const prev: { slug: string; title: string } = allPosts[postIndex + 1] || null
   const next: { slug: string; title: string } = allPosts[postIndex - 1] || null
-  const post = await getFileBySlug<PostFrontMatter>('blog', slug)
+  const post = await getFileBySlug('blog', slug)
   // @ts-ignore
   const authorList = post.frontMatter.authors || ['default']
   const authorPromise = authorList.map(async (author) => {
-    const authorResults = await getFileBySlug<AuthorFrontMatter>('authors', [author])
+    const authorResults = await getFileBySlug('authors', [author])
     return authorResults.frontMatter
   })
   const authorDetails = await Promise.all(authorPromise)
@@ -75,7 +75,7 @@ export default function Blog({
           <PageSEO
             title={frontMatter.title}
             description={frontMatter.summary}
-            image={frontMatter.images[0]}
+            image={frontMatter.images && frontMatter.images.length > 0 ? frontMatter.images[0] : ''}
           />
           <MDXLayoutRenderer
             layout={frontMatter.layout || DEFAULT_LAYOUT}
