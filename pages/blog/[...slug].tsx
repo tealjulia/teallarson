@@ -73,15 +73,10 @@ export default function Blog({
     <>
       {'draft' in frontMatter && frontMatter.draft !== true ? (
         <>
-          <PageSEO
-            title={frontMatter.title}
-            description={frontMatter.summary}
-            image={
-              frontMatter.images && frontMatter.images.length > 0
-                ? siteMetadata.siteUrl + frontMatter.images[0]
-                : ''
-            }
-          />
+          <PageSEO title={frontMatter.title} description={frontMatter.summary} />
+          {frontMatter.images && frontMatter.images.length > 0 ? (
+            <meta property="og:image" content={`/src/${frontMatter.images[0]}`} />
+          ) : null}
           <MDXLayoutRenderer
             layout={frontMatter.layout || DEFAULT_LAYOUT}
             toc={toc}
