@@ -8,6 +8,7 @@ import { AuthorFrontMatter } from 'types/AuthorFrontMatter'
 import { PostFrontMatter } from 'types/PostFrontMatter'
 import { Toc } from 'types/Toc'
 import { PageSEO } from '@/components/SEO'
+import siteMetadata from '@/data/siteMetadata'
 
 const DEFAULT_LAYOUT = 'PostLayout'
 
@@ -75,7 +76,11 @@ export default function Blog({
           <PageSEO
             title={frontMatter.title}
             description={frontMatter.summary}
-            image={frontMatter.images && frontMatter.images.length > 0 ? frontMatter.images[0] : ''}
+            image={
+              frontMatter.images && frontMatter.images.length > 0
+                ? siteMetadata.siteUrl + frontMatter.images[0]
+                : ''
+            }
           />
           <MDXLayoutRenderer
             layout={frontMatter.layout || DEFAULT_LAYOUT}
