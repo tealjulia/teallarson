@@ -1,10 +1,10 @@
 ---
 title: 'A Three Step Waltz for Mocking React Hooks with Jest and TypeScript'
-date: '2023-10-02'
+date: '2023-10-13'
 tags: ['field-notes', 'react', 'testing', 'typescript']
-draft: true
-images: ['/static/images/posts/2022-08-30-bootcamp-to-job-hunt/direction.jpg']
-summary: 'Why is it so hard to mock a hook with multiple values in the same suite?  I may never know.  But I do know how to get around that with this One Cool Trick.'
+draft: false
+images: ['/static/images/posts/2023-10-02-jest-testing-typescript/computer.png']
+summary: 'Why is it so hard to mock a hook with multiple values in the same suite?  That answer is longer than I have room for here.  But I do know how to get around that with this One Cool Trick.'
 ---
 
 ## Testing Hooks: The Three Step Waltz
@@ -21,11 +21,11 @@ I call it a Three Step Waltz:
 Let's break down an example of this in practice. Here, I am testing a component called `RunButton` that starts an async process. I have a hook called `useRunFlow` that triggers and tracks the process' state. I'd like to make sure that my button's content changes correctly based upon a few different hooks (one being this `useRunFlow`):
 
 ```TypeScript
-jest.mock("hooks/useRunFlow"); // 1. Mock the file
-const mockRunFlow = useRunFlow as unknown as jest.Mock<Partial<typeof useRunFlow>>; // 2. Create a mock of the function with some type sorcery
+jest.mock("hooks/useRunSomeFunc"); // 1. Mock the file
+const mockRunFlow = useRunSomeFunc as unknown as jest.Mock<Partial<typeof useRunSomeFunc>>; // 2. Create a mock of the function with some type sorcery
 const baseHookValues = { // the optional base case
-    done: false
-    run: jest.fn(),
+    completed: false
+    runAsyncFunc: jest.fn(),
     loading: false,
 };
 ```
@@ -39,10 +39,10 @@ describe("RunButton", () => {
 
     beforeEach(() => jest.clearAllMocks())
 
-    it("Shows the Incomplete label if done is false", () => {
+    it("Shows the Incomplete label if completed is false", () => {
     mockRunFlow.mockImplementationOnce(() => ({
      ...baseHookValues
-     done: false
+     completed: false
     }));
 
     render(
@@ -52,10 +52,10 @@ describe("RunButton", () => {
     expect(button).toBeInTheDocument();
     })
 
-    it("Shows the Run Again label if done is true", () => {
+    it("Shows the Run Again label if completed is true", () => {
         mockRunFlow.mockImplementationOnce(() => ({
         ...baseHookValues
-        done: true
+        completed: true
         }));
 
         render(
