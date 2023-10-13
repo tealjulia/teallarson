@@ -7,7 +7,7 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { AuthorFrontMatter } from 'types/AuthorFrontMatter'
 import { PostFrontMatter } from 'types/PostFrontMatter'
 import { Toc } from 'types/Toc'
-import Head from 'next/head'
+import { PageSEO } from '@/components/SEO'
 
 const DEFAULT_LAYOUT = 'PostLayout'
 
@@ -72,6 +72,11 @@ export default function Blog({
     <>
       {'draft' in frontMatter && frontMatter.draft !== true ? (
         <>
+          <PageSEO
+            title={frontMatter.title}
+            description={frontMatter.summary}
+            image={frontMatter.images[0]}
+          />
           <MDXLayoutRenderer
             layout={frontMatter.layout || DEFAULT_LAYOUT}
             toc={toc}
