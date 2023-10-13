@@ -18,11 +18,11 @@ I call it a Three Step Waltz:
 3. MockImplementationOnce in your tests
    _Optional_: I like to include a "base case" mock return so that my test code only contains the variables I want to pay attention to + the rest can be handled via a spread operator. In my opinion, this makes it easier to tell what exactly is being tested where, as well as reducing human error.
 
-Let's break down an example of this in practice. Here, I am testing a component called `RunButton` that starts an async process. I have a hook called `useRunFlow` that triggers and tracks the process' state. I'd like to make sure that my button's content changes correctly based upon a few different hooks (one being this `useRunFlow`):
+Let's break down an example of this in practice. Here, I am testing a component called `RunButton` that starts an async process. I have a hook called `useRunSomeFunc` that triggers and tracks the process' state. I'd like to make sure that my button's content changes correctly based upon a few different hooks (one being this `useRunSomeFunc`):
 
 ```TypeScript
 jest.mock("hooks/useRunSomeFunc"); // 1. Mock the file
-const mockRunFlow = useRunSomeFunc as unknown as jest.Mock<Partial<typeof useRunSomeFunc>>; // 2. Create a mock of the function with some type sorcery
+const mockUseRunSomeFunc = useRunSomeFunc as unknown as jest.Mock<Partial<typeof useRunSomeFunc>>; // 2. Create a mock of the function with some type sorcery
 const baseHookValues = { // the optional base case
     completed: false
     runAsyncFunc: jest.fn(),
@@ -40,7 +40,7 @@ describe("RunButton", () => {
     beforeEach(() => jest.clearAllMocks())
 
     it("Shows the Incomplete label if completed is false", () => {
-    mockRunFlow.mockImplementationOnce(() => ({
+    mockUseRunSomeFunc.mockImplementationOnce(() => ({
      ...baseHookValues
      completed: false
     }));
@@ -53,7 +53,7 @@ describe("RunButton", () => {
     })
 
     it("Shows the Run Again label if completed is true", () => {
-        mockRunFlow.mockImplementationOnce(() => ({
+        mockUseRunSomeFunc.mockImplementationOnce(() => ({
         ...baseHookValues
         completed: true
         }));
