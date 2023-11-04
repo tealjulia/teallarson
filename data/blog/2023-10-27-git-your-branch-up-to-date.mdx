@@ -1,0 +1,55 @@
+---
+title: 'Git Your Branch Up to Date Without Even Crying.  Not Even a Little.'
+date: '2023-10-13'
+tags: ['code-chronicles', 'git', 'tl;dr']
+draft: true
+images: ['/static/images/posts/2023-10-02-jest-testing-typescript/computer.png']
+summary: 'I can\'t be the only one who gets panicky when all of a sudden hundreds of unintended file changes end up on their branch.'
+---
+
+I VIVIDLY remember multiple times in my first few months after being hired as a software engineer ending up in a panic because I had tried to `git rebase` and somehow ended up with 100's of commits on my branch that weren't supposed to be there. We're talking having to pair with my manager or a senior engineer because I had no clue what I'd done and I tried to fix it but I made it worse and I was pretty sure this was going to be the end of my newfound career.
+
+But honestly? Fat fingering a commit just happens sometimes. These days I no longer get the feeling of impending doom (usually). Mostly because I know how to get back out of it.
+
+Now, first off, the `git rebase` vs. `git merge` debate totally has its place... I guess. I don't have a particularly strong feeling on it and just go with whatever my team is doing and call it a day. This post is not about which you should use. I do recommend getting a basic understanding of the difference between the two before you try to perform branch surgery like I outline below, though. [This git visual guide](https://marklodato.github.io/visual-git-guide/index-en.html) is really helpful for that.
+
+> NOTE: It's a **really** good idea to make a backup copy of your branch before performing surgery on it. If you make things irreparably worse, you can pick up that backup and move on. If you fix things, you can just delete the backup branch.
+
+## Reset
+
+`git reset --<soft/hard> HEAD~<i>` ([docs](https://git-scm.com/docs/git-reset))
+
+If you mucked up my most recent commit (sent it to the wrong branch, realized after I committed it that I really hated what I wrote and want to do it differently, etc.), You can use a `git reset`. This steps your branch back however many commits. Running it with `--soft` means you'll end up with those changes back on your local, uncommitted. Running it with `--hard` means they evaporate into thin air (approximately). `i` is the number of commits you want to step back.
+
+You'll see locally that git will say you have `i` commits to pull from the remote. If you run a `git push -f` instead, you'll write over the remote and, voila. The commits are gone. ✨
+
+## Interactive Rebase
+
+`git rebase -i HEAD~<i>` ([docs](https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---interactive))
+
+If I mucked up some number of commits between now and say... 30 commits ago... I can run an interactive rebase to choose which commits to keep, drop, or squash. Like the option above, you'll want to specify how far back to look.
+
+From there, you'll see every commit in the git history between now and `i` commits ago. You can `pick` a commit (keep it), `drop` a commit (forget it), or `squash` a commit (combines it with the next commit... I haven't used this because I'm a big fan of many small commits on my branches, but the option does exist!)
+
+## Cherry pick onto a new branch
+
+`git cherry-pick` ([docs](https://git-scm.com/docs/git-cherry-pick))
+
+Sometimes, the nuclear option is just easier. If I have a branch where the changes I want are pretty simple and only a few commits, or it's a branch where I haven't even made a draft PR yet, or the merge conflicts are just too awful to look at, I'll opt for a cherry pick!
+
+To use `git cherry-pick`, check out a new branch and cherry-pick the commits you want to keep onto your newly created branch. When that's done, you can delete the old one and nobody is any the wiser (I mean... sort of... the git history is still there... but you do have a shiny new branch with a clean commit history!).
+
+## Bonus git trick: Rerere aka Reuse Recorded Resoltuion
+
+`git rerere` ([docs](https://git-scm.com/docs/git-rerere))
+
+If you do use `git rebase` instead of `git merge` to keep that nice commit history, sometimes you end up resolving the same merge conflict over and over and over again as you climb through things.
+
+Enter `git rerere`! It keeps track of your resolutions as you go. If it comes across exactly the same diff in exactly the same spot again, it will apply what you picked before. Beautiful magic if you ask me. A coworker turned me onto it earlier this year and I still think it's amazing. This is a setting rather than a command, so if you want to leverage it, you'll need to set it in your config.
+
+### More resources:
+
+- The general [git documentation](https://git-scm.com/) is pretty good, though I found them a bit intimidating as a beginner
+- Most of my git basics I picked up by reading (and re-reading, and re-re-reading) [git - the simple guide - no deep shit](https://rogerdudler.github.io/git-guide/).
+- [Visual git Guide](https://marklodato.github.io/visual-git-guide/index-en.html) is also super handy for reasoning about what it is that happens when you do any of these things!
+- While looking things up for this article, I found [Think Like a Git](https://think-like-a-git.net/), which I have _not_ read personally, but did just add to my "to read" list!
